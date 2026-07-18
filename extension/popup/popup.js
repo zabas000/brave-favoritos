@@ -59,6 +59,7 @@ async function handleAuth(e) {
       state.email = data.email;
       saveState();
       showMainView();
+      triggerAutoSync();
     } catch (err) {
       errorEl.textContent = err.message;
     }
@@ -86,10 +87,15 @@ async function handleAuth(e) {
       state.email = data.email;
       saveState();
       showMainView();
+      triggerAutoSync();
     } catch (err) {
       errorEl.textContent = err.message;
     }
   }
+}
+
+function triggerAutoSync() {
+  chrome.runtime.sendMessage({ type: 'TRIGGER_SYNC' });
 }
 
 async function syncUp() {
