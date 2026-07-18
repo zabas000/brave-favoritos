@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://brave-favoritos.onrender.com'; // CAMBIA esto por tu URL de Render
 
 chrome.alarms.create('sync-check', { periodInMinutes: 60 });
 
