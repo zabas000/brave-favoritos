@@ -6,6 +6,7 @@ let state = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('register-fields').classList.add('hidden');
   loadState();
 
   const tabs = document.querySelectorAll('.tab');
@@ -13,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     t.addEventListener('click', () => {
       tabs.forEach(x => x.classList.remove('active'));
       t.classList.add('active');
-      document.getElementById('login-fields').style.display = t.dataset.tab === 'login' ? 'flex' : 'none';
-      document.getElementById('register-fields').style.display = t.dataset.tab === 'register' ? 'flex' : 'none';
-      document.getElementById('auth-btn').textContent = t.dataset.tab === 'login' ? 'Iniciar Sesión' : 'Registrarse';
+      const isLogin = t.dataset.tab === 'login';
+      document.getElementById('login-fields').classList.toggle('hidden', !isLogin);
+      document.getElementById('register-fields').classList.toggle('hidden', isLogin);
+      document.getElementById('auth-btn').textContent = isLogin ? 'Iniciar Sesión' : 'Registrarse';
       document.getElementById('error-msg').textContent = '';
     });
   });
@@ -233,8 +235,8 @@ function disableButtons(disabled) {
 }
 
 function showMainView() {
-  document.getElementById('login-view').style.display = 'none';
-  document.getElementById('main-view').style.display = 'block';
+  document.getElementById('login-view').classList.add('hidden');
+  document.getElementById('main-view').classList.remove('hidden');
   document.getElementById('user-email').textContent = state.email;
   updateCounts();
   loadCloudCount();
@@ -243,11 +245,14 @@ function showMainView() {
 function logout() {
   state.token = null;
   state.email = null;
-  localStorage.removeItem('brave_fav_state');
-  document.getElementById('main-view').style.display = 'none';
-  document.getElementById('login-view').style.display = 'block';
+  chrome.storage.local.remove('brave_fav_state');
+  document.getElementById('main-view').classList.add('hidden');
+  document.getElementById('login-view').classList.remove('hidden');
   document.getElementById('email').value = '';
   document.getElementById('password').value = '';
+  document.getElementById('reg-email').value = '';
+  document.getElementById('reg-password').value = '';
+  document.getElementById('reg-confirm').value = '';
 }
 
 function saveState() {
@@ -261,7 +266,7 @@ function loadState() {
       state.email = result.brave_fav_state.email;
       showMainView();
     } else {
-      document.getElementById('login-view').style.display = 'block';
+      document.getElementById('login-view').classList.remove('hidden');
     }
   });
 }

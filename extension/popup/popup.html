@@ -2,26 +2,29 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brave Favoritos Sync</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div id="app">
+
     <div id="login-view">
+      <div class="logo">B</div>
       <h1>Brave Favoritos</h1>
       <p class="subtitle">Sincroniza tus marcadores</p>
+
       <div class="tabs">
         <button class="tab active" data-tab="login">Iniciar Sesión</button>
         <button class="tab" data-tab="register">Registrarse</button>
       </div>
+
       <form id="auth-form">
-        <div id="login-fields">
-          <input type="email" id="email" placeholder="Email" required>
+        <div class="field-group" id="login-fields">
+          <input type="email" id="email" placeholder="Correo electrónico" required>
           <input type="password" id="password" placeholder="Contraseña" required>
         </div>
-        <div id="register-fields" style="display:none">
-          <input type="email" id="reg-email" placeholder="Email" required>
+        <div class="field-group hidden" id="register-fields">
+          <input type="email" id="reg-email" placeholder="Correo electrónico" required>
           <input type="password" id="reg-password" placeholder="Contraseña (mín. 6 caracteres)" required minlength="6">
           <input type="password" id="reg-confirm" placeholder="Confirmar contraseña" required>
         </div>
@@ -30,26 +33,38 @@
       </form>
     </div>
 
-    <div id="main-view" style="display:none">
+    <div id="main-view" class="hidden">
       <div class="header">
-        <h1>Brave Favoritos</h1>
-        <span id="user-email" class="user-email"></span>
+        <span class="logo-sm">B</span>
+        <div>
+          <h1>Brave Favoritos</h1>
+          <span id="user-email" class="user-email"></span>
+        </div>
       </div>
-      <div class="stats">
-        <p>Marcadores locales: <strong id="local-count">0</strong></p>
-        <p>Marcadores en nube: <strong id="cloud-count">0</strong></p>
+
+      <div class="card">
+        <div class="stat-row">
+          <span>Locales</span>
+          <strong id="local-count">0</strong>
+        </div>
+        <div class="stat-row">
+          <span>Nube</span>
+          <strong id="cloud-count">0</strong>
+        </div>
       </div>
-      <div class="actions">
-        <button id="sync-up-btn" class="btn-primary">
-          Subir a la nube
-        </button>
-        <button id="sync-down-btn" class="btn-secondary">
-          Descargar de la nube
-        </button>
-      </div>
+
+      <button id="sync-up-btn" class="btn-primary">
+        <span>↑</span> Subir a la nube
+      </button>
+      <button id="sync-down-btn" class="btn-secondary">
+        <span>↓</span> Descargar de la nube
+      </button>
+
       <div id="sync-status" class="status"></div>
-      <button id="logout-btn" class="btn-logout">Cerrar Sesión</button>
+
+      <button id="logout-btn" class="btn-link">Cerrar Sesión</button>
     </div>
+
   </div>
   <script src="popup.js"></script>
 </body>
