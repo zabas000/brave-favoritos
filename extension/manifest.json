@@ -12,9 +12,6 @@
     "http://localhost:3000/*",
     "https://brave-favoritos.onrender.com/*"
   ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
-  },
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {

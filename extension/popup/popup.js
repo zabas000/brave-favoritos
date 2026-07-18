@@ -5,28 +5,32 @@ let state = {
   email: null
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('register-fields').classList.add('hidden');
-  loadState();
+console.log('Popup iniciado');
 
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(t => {
-    t.addEventListener('click', () => {
-      tabs.forEach(x => x.classList.remove('active'));
-      t.classList.add('active');
-      const isLogin = t.dataset.tab === 'login';
-      document.getElementById('login-fields').classList.toggle('hidden', !isLogin);
-      document.getElementById('register-fields').classList.toggle('hidden', isLogin);
-      document.getElementById('auth-btn').textContent = isLogin ? 'Iniciar Sesión' : 'Registrarse';
-      document.getElementById('error-msg').textContent = '';
-    });
+document.getElementById('register-fields').classList.add('hidden');
+loadState();
+
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(t => {
+  t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const isLogin = t.dataset.tab === 'login';
+    document.getElementById('login-fields').classList.toggle('hidden', !isLogin);
+    document.getElementById('register-fields').classList.toggle('hidden', isLogin);
+    document.getElementById('auth-btn').textContent = isLogin ? 'Iniciar Sesión' : 'Registrarse';
+    document.getElementById('error-msg').textContent = '';
+    console.log('Tab cambiado a:', t.dataset.tab);
   });
-
-  document.getElementById('auth-form').addEventListener('submit', handleAuth);
-  document.getElementById('sync-up-btn').addEventListener('click', syncUp);
-  document.getElementById('sync-down-btn').addEventListener('click', syncDown);
-  document.getElementById('logout-btn').addEventListener('click', logout);
 });
+
+document.getElementById('auth-form').addEventListener('submit', (e) => {
+  console.log('Form submit detectado');
+  handleAuth(e);
+});
+document.getElementById('sync-up-btn').addEventListener('click', syncUp);
+document.getElementById('sync-down-btn').addEventListener('click', syncDown);
+document.getElementById('logout-btn').addEventListener('click', logout);
 
 async function handleAuth(e) {
   e.preventDefault();
