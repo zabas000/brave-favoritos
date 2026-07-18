@@ -1,4 +1,4 @@
-node_modules/
-data.db
+server/node_modules/
+server/data.db
 *.log
 .DS_Store

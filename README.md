@@ -1,20 +1,36 @@
 # Brave Favoritos Sync
 
-Extensión de Brave para sincronizar marcadores en la nube.
+Sincroniza tus marcadores de Brave en la nube.
 
-## Backend (Render)
+## 📦 Descargar la extensión
 
-1. Crea un repositorio en GitHub y sube este código
-2. En [render.com](https://render.com) crea un **Web Service** conectado al repo
-3. Crea una **Base de Datos PostgreSQL** desde el Dashboard de Render
-4. En el Web Service, agrega estas variables de entorno:
-   - `DATABASE_URL`: copiada de la base de datos PostgreSQL
-   - `JWT_SECRET`: una clave secreta
-5. Render ejecutará `npm install` y `node server.js` automáticamente
+Solo necesitas la carpeta [`extension/`](extension/):
 
-## Extensión (Brave)
+**Opción A — Descargar todo el repo:**
+```bash
+git clone https://github.com/zabas000/brave-favoritos.git
+```
+Luego abre `brave://extensions/`, activa "Modo desarrollador", y carga la carpeta `extension/`.
+
+**Opción B — Solo la extensión:**
+Entra a https://github.com/zabas000/brave-favoritos/tree/master/extension y descarga los archivos.
+
+## 🚀 Cómo usarla
 
 1. Abre `brave://extensions/`
-2. Activa "Modo desarrollador"
-3. "Cargar descomprimida" → selecciona `extension/`
-4. En `extension/popup/popup.js` y `extension/background.js`, cambia `API_URL` por la URL de tu Render
+2. Activa **"Modo desarrollador"** (arriba a la derecha)
+3. Haz clic en **"Cargar descomprimida"**
+4. Selecciona la carpeta `extension/`
+5. Haz clic en el icono de la extensión → **Crear cuenta**
+6. **Subir a la nube** → guarda tus marcadores
+7. En otro PC: instala la extensión, inicia sesión y los marcadores se descargan solos
+
+## 🖥️ Backend (solo para desarrolladores)
+
+El servidor ya está corriendo en `https://brave-favoritos.onrender.com`. Si quieres tu propio servidor:
+
+```bash
+cd server
+npm install
+npm start
+```
