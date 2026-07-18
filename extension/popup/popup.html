@@ -18,15 +18,15 @@
         <button class="tab" data-tab="register">Registrarse</button>
       </div>
 
-      <form id="auth-form">
+      <form id="auth-form" novalidate>
         <div class="field-group" id="login-fields">
-          <input type="email" id="email" placeholder="Correo electrónico" required>
-          <input type="password" id="password" placeholder="Contraseña" required>
+          <input type="email" id="email" placeholder="Correo electrónico">
+          <input type="password" id="password" placeholder="Contraseña">
         </div>
         <div class="field-group hidden" id="register-fields">
-          <input type="email" id="reg-email" placeholder="Correo electrónico" required>
-          <input type="password" id="reg-password" placeholder="Contraseña (mín. 6 caracteres)" required minlength="6">
-          <input type="password" id="reg-confirm" placeholder="Confirmar contraseña" required>
+          <input type="email" id="reg-email" placeholder="Correo electrónico">
+          <input type="password" id="reg-password" placeholder="Contraseña (mín. 6 caracteres)">
+          <input type="password" id="reg-confirm" placeholder="Confirmar contraseña">
         </div>
         <p id="error-msg" class="error"></p>
         <button type="submit" id="auth-btn">Iniciar Sesión</button>
