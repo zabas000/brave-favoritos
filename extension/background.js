@@ -1,6 +1,6 @@
 const API_URL = 'https://brave-favoritos.onrender.com'; // CAMBIA esto por tu URL de Render
 
-chrome.alarms.create('sync', { periodInMinutes: 30 });
+chrome.alarms.create('sync', { periodInMinutes: 2880 }); // cada 2 días
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'sync') autoSync();
