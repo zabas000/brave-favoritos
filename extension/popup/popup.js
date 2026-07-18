@@ -31,6 +31,7 @@ document.getElementById('auth-form').addEventListener('submit', (e) => {
 document.getElementById('sync-up-btn').addEventListener('click', syncUp);
 document.getElementById('sync-down-btn').addEventListener('click', syncDown);
 document.getElementById('logout-btn').addEventListener('click', logout);
+document.getElementById('show-list-btn').addEventListener('click', toggleBookmarkList);
 
 async function handleAuth(e) {
   e.preventDefault();
@@ -109,6 +110,8 @@ async function syncUp() {
     if (!res.ok) throw new Error(data.error);
     updateCloudCount(bookmarks.length);
     setStatus(`${bookmarks.length} marcadores subidos correctamente`, 'success');
+    cachedBookmarks = null;
+    document.getElementById('show-list-btn').classList.remove('off');
   } catch (err) {
     setStatus('Error: ' + err.message, 'error');
   }
@@ -144,6 +147,7 @@ async function syncDown() {
     }
     setStatus(`${data.bookmarks.length} marcadores restaurados`, 'success');
     updateCloudCount(data.bookmarks.length);
+    cachedBookmarks = null;
   } catch (err) {
     setStatus('Error: ' + err.message, 'error');
   }
@@ -219,12 +223,97 @@ async function loadCloudCount() {
     const data = await res.json();
     if (res.ok && data.bookmarks) {
       document.getElementById('cloud-count').textContent = data.bookmarks.length;
+      if (data.bookmarks.length > 0) {
+        document.getElementById('show-list-btn').classList.remove('off');
+      } else {
+        document.getElementById('show-list-btn').classList.add('off');
+      }
     } else {
       document.getElementById('cloud-count').textContent = '0';
+      document.getElementById('show-list-btn').classList.add('off');
     }
   } catch {
     document.getElementById('cloud-count').textContent = '?';
   }
+}
+
+let cachedBookmarks = null;
+
+async function toggleBookmarkList() {
+  const list = document.getElementById('bookmark-list');
+  const btn = document.getElementById('show-list-btn');
+  const arrow = btn.querySelector('.arrow');
+
+  if (list.classList.contains('off')) {
+    list.classList.remove('off');
+    arrow.classList.add('open');
+    btn.querySelector('span').textContent = 'Ocultar marcadores';
+    if (!cachedBookmarks) {
+      await fetchAndRenderBookmarks();
+    }
+  } else {
+    list.classList.add('off');
+    arrow.classList.remove('open');
+    btn.querySelector('span').textContent = 'Mostrar marcadores';
+  }
+}
+
+async function fetchAndRenderBookmarks() {
+  const container = document.getElementById('list-items');
+  const count = document.getElementById('list-count');
+  container.innerHTML = '<div class="list-item" style="justify-content:center;color:#888">Cargando...</div>';
+  try {
+    const res = await fetch(`${API_URL}/api/bookmarks`, {
+      headers: { 'Authorization': `Bearer ${state.token}` }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    cachedBookmarks = data.bookmarks || [];
+    renderBookmarkList(cachedBookmarks);
+  } catch (err) {
+    container.innerHTML = `<div class="list-item" style="justify-content:center;color:#ff3b30">Error: ${err.message}</div>`;
+  }
+}
+
+function renderBookmarkList(bookmarks) {
+  const container = document.getElementById('list-items');
+  const count = document.getElementById('list-count');
+  count.textContent = bookmarks.length;
+
+  if (bookmarks.length === 0) {
+    container.innerHTML = '<div class="list-item" style="justify-content:center;color:#888">Sin marcadores</div>';
+    return;
+  }
+
+  const folders = {};
+  for (const bm of bookmarks) {
+    const folder = bm.parent || 'Sin carpeta';
+    if (!folders[folder]) folders[folder] = [];
+    folders[folder].push(bm);
+  }
+
+  let html = '';
+  for (const [folder, items] of Object.entries(folders)) {
+    html += `<div class="list-item" style="font-weight:600;color:#888;font-size:11px;padding:6px 14px 2px">${folder}</div>`;
+    for (const bm of items) {
+      const host = bm.url ? bm.url.replace('https://','').replace('http://','').split('/')[0] : '?';
+      const letter = (bm.title || '?')[0].toUpperCase();
+      html += `
+        <a class="list-item" href="${bm.url}" title="${bm.title}">
+          <div class="favicon">${letter}</div>
+          <span class="title">${bm.title || 'Sin título'}</span>
+          <span class="url">${host}</span>
+        </a>`;
+    }
+  }
+  container.innerHTML = html;
+
+  container.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      chrome.tabs.create({ url: a.href });
+    });
+  });
 }
 
 function setStatus(msg, type) {

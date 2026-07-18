@@ -81,6 +81,22 @@
 
     <div id="sync-status" class="status off"></div>
 
+    <button id="show-list-btn" class="btn ghost list-toggle off">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span>Mostrar marcadores</span>
+      <span class="arrow">▶</span>
+    </button>
+
+    <div id="bookmark-list" class="list-container off">
+      <div class="list-header">
+        <span>Marcadores en la nube</span>
+        <span class="list-count" id="list-count">0</span>
+      </div>
+      <div id="list-items" class="list-items"></div>
+    </div>
+
     <button id="logout-btn" class="btn ghost">Cerrar sesión</button>
   </div>
 
